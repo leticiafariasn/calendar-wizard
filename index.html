@@ -21,9 +21,15 @@
         .header {
             display: flex;
             align-items: center;
+            justify-content: space-between;
             padding: 20px 30px;
             background: rgba(0, 0, 0, 0.3);
             border-bottom: 2px solid #333;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: center;
         }
 
         .logo {
@@ -42,6 +48,113 @@
             font-size: 16px;
             color: #cccccc;
             margin-top: 5px;
+        }
+
+        .header-right {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .user-info {
+            text-align: right;
+            margin-right: 15px;
+        }
+
+        .user-role {
+            font-size: 14px;
+            color: #e31e24;
+            font-weight: bold;
+        }
+
+        .user-name {
+            font-size: 12px;
+            color: #cccccc;
+        }
+
+        .btn-logout {
+            background: #666;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 6px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+
+        .btn-logout:hover {
+            background: #777;
+        }
+
+        .controls-bar {
+            max-width: 1200px;
+            margin: 20px auto;
+            padding: 0 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+        }
+
+        .filter-section {
+            display: flex;
+            align-items: center;
+            gap: 15px;
+        }
+
+        .filter-group {
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .filter-group label {
+            font-size: 14px;
+            color: #cccccc;
+            font-weight: bold;
+        }
+
+        .filter-select {
+            padding: 8px 12px;
+            border: 2px solid #444;
+            border-radius: 6px;
+            background: #2a2a2a;
+            color: white;
+            font-size: 14px;
+            min-width: 150px;
+        }
+
+        .filter-select:focus {
+            outline: none;
+            border-color: #e31e24;
+        }
+
+        .btn-add-event {
+            background: #e31e24;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+        }
+
+        .btn-add-event:hover {
+            background: #c41e24;
+            transform: translateY(-2px);
+        }
+
+        .btn-add-event:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
         }
 
         .calendar-container {
@@ -251,6 +364,12 @@
             transform: translateY(-2px);
         }
 
+        .btn:disabled {
+            background: #666;
+            cursor: not-allowed;
+            transform: none;
+        }
+
         .btn-delete {
             background: #ef4444;
         }
@@ -304,7 +423,81 @@
             border-radius: 4px;
         }
 
+        .login-modal {
+            display: flex;
+            position: fixed;
+            z-index: 2000;
+            left: 0;
+            top: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.9);
+            backdrop-filter: blur(10px);
+        }
+
+        .login-content {
+            background: linear-gradient(135deg, #2a2a2a 0%, #3a3a3a 100%);
+            margin: auto;
+            padding: 40px;
+            border-radius: 20px;
+            width: 90%;
+            max-width: 400px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.8);
+            text-align: center;
+        }
+
+        .login-title {
+            color: #e31e24;
+            font-size: 28px;
+            margin-bottom: 30px;
+            font-weight: bold;
+        }
+
+        .role-buttons {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .role-btn {
+            background: #e31e24;
+            color: white;
+            border: none;
+            padding: 15px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+
+        .role-btn:hover {
+            background: #c41e24;
+            transform: translateY(-2px);
+        }
+
+        .permission-denied {
+            color: #ef4444;
+            font-size: 14px;
+            margin-top: 10px;
+            text-align: center;
+        }
+
         @media (max-width: 768px) {
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .controls-bar {
+                flex-direction: column;
+                align-items: stretch;
+            }
+
+            .filter-section {
+                justify-content: center;
+            }
+
             .calendar-header {
                 flex-direction: column;
                 gap: 15px;
@@ -327,12 +520,57 @@
     </style>
 </head>
 <body>
-    <div class="header">
-        <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8LPkvXaM6sMZSO4TUEP6KVtaaRKS4v.png" alt="Wizard by Pearson" class="logo">
-        <div>
-            <div class="title">Calendário Wizard</div>
-            <div class="subtitle">Eventos e Datas Comemorativas</div>
+    <!-- Login Modal -->
+    <div id="loginModal" class="login-modal">
+        <div class="login-content">
+            <h2 class="login-title">Acesso ao Sistema</h2>
+            <p style="color: #cccccc; margin-bottom: 30px;">Selecione seu cargo para acessar o calendário:</p>
+            <div class="role-buttons">
+                <button class="role-btn" onclick="login('Coordenador')">Coordenador</button>
+                <button class="role-btn" onclick="login('Marketing')">Marketing</button>
+                <button class="role-btn" onclick="login('Professor')">Professor</button>
+            </div>
         </div>
+    </div>
+
+    <div class="header">
+        <div class="header-left">
+            <img src="https://hebbkx1anhila5yf.public.blob.vercel-storage.com/image-8LPkvXaM6sMZSO4TUEP6KVtaaRKS4v.png" alt="Wizard by Pearson" class="logo">
+            <div>
+                <div class="title">Calendário Wizard</div>
+                <div class="subtitle">Eventos e Datas Comemorativas</div>
+            </div>
+        </div>
+        <div class="header-right">
+            <div class="user-info">
+                <div class="user-role" id="userRole">Visitante</div>
+                <div class="user-name" id="userName">Não logado</div>
+            </div>
+            <button class="btn-logout" onclick="logout()">Sair</button>
+        </div>
+    </div>
+
+    <div class="controls-bar">
+        <div class="filter-section">
+            <div class="filter-group">
+                <label for="unitFilter">Unidade:</label>
+                <select id="unitFilter" class="filter-select" onchange="filterByUnit()">
+                    <option value="all">Todas as Unidades</option>
+                    <option value="fatima">Fátima</option>
+                    <option value="parangaba">Parangaba</option>
+                    <option value="washington">Washington Soares</option>
+                    <option value="eusebio">Eusébio</option>
+                    <option value="maracanaú">Maracanaú</option>
+                    <option value="bezerra">Bezerra</option>
+                    <option value="maraponga">Maraponga</option>
+                    <option value="dom-luis">Dom Luís</option>
+                </select>
+            </div>
+        </div>
+        <button class="btn-add-event" id="addEventBtn" onclick="openAddEventModal()" disabled>
+            <span>+</span>
+            Adicionar Evento
+        </button>
     </div>
 
     <div class="calendar-container">
@@ -370,13 +608,13 @@
         </div>
     </div>
 
-    <!-- Modal -->
+    <!-- Event Modal -->
     <div id="eventModal" class="modal">
         <div class="modal-content">
             <span class="close" onclick="closeModal()">&times;</span>
             <h2 id="modalTitle">Eventos do Dia</h2>
             
-            <div class="event-form">
+            <div class="event-form" id="eventForm">
                 <div class="form-group">
                     <label for="eventTitle">Título do Evento:</label>
                     <input type="text" id="eventTitle" placeholder="Digite o título do evento">
@@ -392,10 +630,27 @@
                     </select>
                 </div>
                 <div class="form-group">
+                    <label for="eventUnit">Unidade:</label>
+                    <select id="eventUnit">
+                        <option value="all">Todas as Unidades</option>
+                        <option value="fatima">Fátima</option>
+                        <option value="parangaba">Parangaba</option>
+                        <option value="washington">Washington Soares</option>
+                        <option value="eusebio">Eusébio</option>
+                        <option value="maracanaú">Maracanaú</option>
+                        <option value="bezerra">Bezerra</option>
+                        <option value="maraponga">Maraponga</option>
+                        <option value="dom-luis">Dom Luís</option>
+                    </select>
+                </div>
+                <div class="form-group">
                     <label for="eventDescription">Descrição:</label>
                     <textarea id="eventDescription" rows="3" placeholder="Descrição do evento (opcional)"></textarea>
                 </div>
-                <button class="btn" onclick="addEvent()">Adicionar Evento</button>
+                <button class="btn" id="addEventModalBtn" onclick="addEvent()">Adicionar Evento</button>
+                <div class="permission-denied" id="permissionDenied" style="display: none;">
+                    Você não tem permissão para adicionar eventos.
+                </div>
             </div>
 
             <div class="events-list" id="eventsList">
@@ -408,6 +663,8 @@
         let currentDate = new Date();
         let events = JSON.parse(localStorage.getItem('wizardEvents')) || {};
         let selectedDate = null;
+        let currentUser = null;
+        let selectedUnit = 'all';
 
         const monthNames = [
             'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
@@ -415,6 +672,83 @@
         ];
 
         const dayNames = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+        const unitNames = {
+            'all': 'Todas as Unidades',
+            'fatima': 'Fátima',
+            'parangaba': 'Parangaba',
+            'washington': 'Washington Soares',
+            'eusebio': 'Eusébio',
+            'maracanaú': 'Maracanaú',
+            'bezerra': 'Bezerra',
+            'maraponga': 'Maraponga',
+            'dom-luis': 'Dom Luís'
+        };
+
+        // Permission system
+        const permissions = {
+            'Coordenador': { canAdd: true, canDelete: true },
+            'Marketing': { canAdd: true, canDelete: true },
+            'Professor': { canAdd: false, canDelete: false }
+        };
+
+        function login(role) {
+            currentUser = {
+                role: role,
+                name: `Usuário ${role}`,
+                permissions: permissions[role]
+            };
+            
+            document.getElementById('userRole').textContent = role;
+            document.getElementById('userName').textContent = currentUser.name;
+            document.getElementById('loginModal').style.display = 'none';
+            
+            updatePermissions();
+        }
+
+        function logout() {
+            currentUser = null;
+            document.getElementById('userRole').textContent = 'Visitante';
+            document.getElementById('userName').textContent = 'Não logado';
+            document.getElementById('loginModal').style.display = 'flex';
+            updatePermissions();
+        }
+
+        function updatePermissions() {
+            const addEventBtn = document.getElementById('addEventBtn');
+            const addEventModalBtn = document.getElementById('addEventModalBtn');
+            const permissionDenied = document.getElementById('permissionDenied');
+            
+            if (currentUser && currentUser.permissions.canAdd) {
+                addEventBtn.disabled = false;
+                addEventModalBtn.style.display = 'inline-block';
+                permissionDenied.style.display = 'none';
+            } else {
+                addEventBtn.disabled = true;
+                addEventModalBtn.style.display = 'none';
+                permissionDenied.style.display = currentUser ? 'block' : 'none';
+            }
+        }
+
+        function filterByUnit() {
+            selectedUnit = document.getElementById('unitFilter').value;
+            generateCalendar();
+        }
+
+        function shouldShowEvent(event) {
+            if (selectedUnit === 'all') return true;
+            return event.unit === selectedUnit || event.unit === 'all';
+        }
+
+        function openAddEventModal() {
+            if (!currentUser || !currentUser.permissions.canAdd) {
+                alert('Você não tem permissão para adicionar eventos.');
+                return;
+            }
+            
+            const today = new Date();
+            openModal(today.getDate());
+        }
 
         function generateCalendar() {
             const calendar = document.getElementById('calendar');
@@ -486,10 +820,12 @@
                 const dateKey = `${currentDate.getFullYear()}-${currentDate.getMonth()}-${day}`;
                 if (events[dateKey]) {
                     events[dateKey].forEach(event => {
-                        const eventDiv = document.createElement('div');
-                        eventDiv.className = `event type-${event.type}`;
-                        eventDiv.textContent = event.title;
-                        dayCell.appendChild(eventDiv);
+                        if (shouldShowEvent(event)) {
+                            const eventDiv = document.createElement('div');
+                            eventDiv.className = `event type-${event.type}`;
+                            eventDiv.textContent = event.title;
+                            dayCell.appendChild(eventDiv);
+                        }
                     });
                 }
                 
@@ -519,11 +855,18 @@
             document.getElementById('eventTitle').value = '';
             document.getElementById('eventDescription').value = '';
             document.getElementById('eventType').value = 'meeting';
+            document.getElementById('eventUnit').value = 'all';
         }
 
         function addEvent() {
+            if (!currentUser || !currentUser.permissions.canAdd) {
+                alert('Você não tem permissão para adicionar eventos.');
+                return;
+            }
+
             const title = document.getElementById('eventTitle').value.trim();
             const type = document.getElementById('eventType').value;
+            const unit = document.getElementById('eventUnit').value;
             const description = document.getElementById('eventDescription').value.trim();
             
             if (!title) {
@@ -541,7 +884,9 @@
                 id: Date.now(),
                 title: title,
                 type: type,
-                description: description
+                unit: unit,
+                description: description,
+                createdBy: currentUser.role
             };
             
             events[dateKey].push(newEvent);
@@ -552,6 +897,11 @@
         }
 
         function deleteEvent(dateKey, eventId) {
+            if (!currentUser || !currentUser.permissions.canDelete) {
+                alert('Você não tem permissão para excluir eventos.');
+                return;
+            }
+
             if (confirm('Tem certeza que deseja excluir este evento?')) {
                 events[dateKey] = events[dateKey].filter(event => event.id !== eventId);
                 
@@ -572,38 +922,47 @@
             eventsList.innerHTML = '';
             
             if (events[dateKey] && events[dateKey].length > 0) {
-                events[dateKey].forEach(event => {
-                    const eventItem = document.createElement('div');
-                    eventItem.className = 'event-item';
-                    
-                    const eventInfo = document.createElement('div');
-                    eventInfo.className = 'event-info';
-                    
-                    const eventTitle = document.createElement('h4');
-                    eventTitle.textContent = event.title;
-                    eventInfo.appendChild(eventTitle);
-                    
-                    if (event.description) {
-                        const eventDesc = document.createElement('p');
-                        eventDesc.textContent = event.description;
-                        eventInfo.appendChild(eventDesc);
-                    }
-                    
-                    const eventType = document.createElement('p');
-                    eventType.textContent = `Tipo: ${getTypeLabel(event.type)}`;
-                    eventType.style.fontSize = '12px';
-                    eventType.style.color = '#999';
-                    eventInfo.appendChild(eventType);
-                    
-                    const deleteBtn = document.createElement('button');
-                    deleteBtn.className = 'btn btn-delete';
-                    deleteBtn.textContent = 'Excluir';
-                    deleteBtn.onclick = () => deleteEvent(dateKey, event.id);
-                    
-                    eventItem.appendChild(eventInfo);
-                    eventItem.appendChild(deleteBtn);
-                    eventsList.appendChild(eventItem);
-                });
+                const filteredEvents = events[dateKey].filter(event => shouldShowEvent(event));
+                
+                if (filteredEvents.length > 0) {
+                    filteredEvents.forEach(event => {
+                        const eventItem = document.createElement('div');
+                        eventItem.className = 'event-item';
+                        
+                        const eventInfo = document.createElement('div');
+                        eventInfo.className = 'event-info';
+                        
+                        const eventTitle = document.createElement('h4');
+                        eventTitle.textContent = event.title;
+                        eventInfo.appendChild(eventTitle);
+                        
+                        if (event.description) {
+                            const eventDesc = document.createElement('p');
+                            eventDesc.textContent = event.description;
+                            eventInfo.appendChild(eventDesc);
+                        }
+                        
+                        const eventDetails = document.createElement('p');
+                        eventDetails.innerHTML = `Tipo: ${getTypeLabel(event.type)} | Unidade: ${unitNames[event.unit] || 'Todas'}`;
+                        eventDetails.style.fontSize = '12px';
+                        eventDetails.style.color = '#999';
+                        eventInfo.appendChild(eventDetails);
+                        
+                        eventItem.appendChild(eventInfo);
+                        
+                        if (currentUser && currentUser.permissions.canDelete) {
+                            const deleteBtn = document.createElement('button');
+                            deleteBtn.className = 'btn btn-delete';
+                            deleteBtn.textContent = 'Excluir';
+                            deleteBtn.onclick = () => deleteEvent(dateKey, event.id);
+                            eventItem.appendChild(deleteBtn);
+                        }
+                        
+                        eventsList.appendChild(eventItem);
+                    });
+                } else {
+                    eventsList.innerHTML = '<p style="text-align: center; color: #666;">Nenhum evento para a unidade selecionada nesta data.</p>';
+                }
             } else {
                 eventsList.innerHTML = '<p style="text-align: center; color: #666;">Nenhum evento nesta data.</p>';
             }
@@ -644,8 +1003,9 @@
 
         // Initialize calendar
         generateCalendar();
+        updatePermissions();
 
-        // Add some sample events
+        // Add some sample events with units
         if (Object.keys(events).length === 0) {
             const today = new Date();
             const sampleDateKey = `${today.getFullYear()}-${today.getMonth()}-${today.getDate()}`;
@@ -654,7 +1014,9 @@
                     id: 1,
                     title: 'Reunião de Equipe',
                     type: 'meeting',
-                    description: 'Reunião semanal da equipe pedagógica'
+                    unit: 'fatima',
+                    description: 'Reunião semanal da equipe pedagógica',
+                    createdBy: 'Coordenador'
                 }
             ];
             
@@ -666,7 +1028,9 @@
                     id: 2,
                     title: 'Treinamento Novo Sistema',
                     type: 'training',
-                    description: 'Capacitação para o novo sistema de gestão'
+                    unit: 'all',
+                    description: 'Capacitação para o novo sistema de gestão',
+                    createdBy: 'Marketing'
                 }
             ];
             
